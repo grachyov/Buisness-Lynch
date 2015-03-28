@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		AD6620501AB02E2F005126A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD66204F1AB02E2F005126A6 /* AppDelegate.swift */; };
-		AD6620521AB02E2F005126A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6620511AB02E2F005126A6 /* ViewController.swift */; };
 		AD6620551AB02E2F005126A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD6620531AB02E2F005126A6 /* Main.storyboard */; };
 		AD6620571AB02E2F005126A6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6620561AB02E2F005126A6 /* Images.xcassets */; };
 		AD66205A1AB02E2F005126A6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD6620581AB02E2F005126A6 /* LaunchScreen.xib */; };
 		AD6620661AB02E30005126A6 /* Buisness_LynchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6620651AB02E30005126A6 /* Buisness_LynchTests.swift */; };
+		AD746EF31AC3267600AB3939 /* BLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD746EF21AC3267600AB3939 /* BLViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +29,13 @@
 		AD66204A1AB02E2F005126A6 /* Buisness Lynch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Buisness Lynch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD66204E1AB02E2F005126A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD66204F1AB02E2F005126A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AD6620511AB02E2F005126A6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AD6620541AB02E2F005126A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AD6620561AB02E2F005126A6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AD6620591AB02E2F005126A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AD66205F1AB02E30005126A6 /* Buisness LynchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Buisness LynchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6620641AB02E30005126A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD6620651AB02E30005126A6 /* Buisness_LynchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buisness_LynchTests.swift; sourceTree = "<group>"; };
+		AD746EF21AC3267600AB3939 /* BLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				AD66204F1AB02E2F005126A6 /* AppDelegate.swift */,
-				AD6620511AB02E2F005126A6 /* ViewController.swift */,
+				AD746EF21AC3267600AB3939 /* BLViewController.swift */,
 				AD6620531AB02E2F005126A6 /* Main.storyboard */,
 				AD6620561AB02E2F005126A6 /* Images.xcassets */,
 				AD6620581AB02E2F005126A6 /* LaunchScreen.xib */,
@@ -161,6 +161,7 @@
 				TargetAttributes = {
 					AD6620491AB02E2F005126A6 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 8DXC3N7E7P;
 					};
 					AD66205E1AB02E30005126A6 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -212,7 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD6620521AB02E2F005126A6 /* ViewController.swift in Sources */,
+				AD746EF31AC3267600AB3939 /* BLViewController.swift in Sources */,
 				AD6620501AB02E2F005126A6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,7 +339,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Buisness Lynch/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -348,7 +351,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Buisness Lynch/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -407,6 +412,7 @@
 				AD66206B1AB02E30005126A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AD66206C1AB02E30005126A6 /* Build configuration list for PBXNativeTarget "Buisness LynchTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +421,7 @@
 				AD66206E1AB02E30005126A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
