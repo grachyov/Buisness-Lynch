@@ -12,24 +12,23 @@ class BLViewController: UIViewController {
 
     var srcImageStringURL: String?
     var srcView: UIView?
-    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/03/11/")!
+    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/1/")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showImage()
-        findOffset()
+        findImageOffset()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func showImage() {
         srcView = UIImageView(image: loadSrcImage())
         view.addSubview(srcView!)
         view.addSubview(UIImageView(image: loadOverlayImage()))
-        view.addSubview(createTestLabel())
+        addTestLabels()
     }
     
     func loadSrcImage() -> UIImage {
@@ -44,9 +43,7 @@ class BLViewController: UIViewController {
     
     func loadOverlayImage() -> UIImage {
         var overlayImageStringURL = srcImageStringURL!
-        overlayImageStringURL.removeRange(overlayImageStringURL.rangeOfString("jpg")!)
-        overlayImageStringURL.removeRange(overlayImageStringURL.rangeOfString("//")!)
-        overlayImageStringURL = "http://" + overlayImageStringURL + "png"
+        overlayImageStringURL = "http:/" + overlayImageStringURL.stringByDeletingPathExtension + ".png"
         var pngImageName = overlayImageStringURL.lastPathComponent
         overlayImageStringURL = overlayImageStringURL.stringByDeletingLastPathComponent
         overlayImageStringURL = overlayImageStringURL + "/lynch-" + pngImageName
@@ -55,7 +52,7 @@ class BLViewController: UIViewController {
         return overlayImage
     }
     
-    func findOffset() {
+    func findImageOffset() {
         let pageHTMLData = NSData(contentsOfURL: pageURL)
         let lynchParser = TFHpple(HTMLData: pageHTMLData)
         let offsetXpath = "//div[@id='Lynch']/img/@style"
@@ -75,35 +72,44 @@ class BLViewController: UIViewController {
         srcView!.center.y = newY
     }
 
-    func createTestLabel() -> UILabel {
+    func addTestLabels() {
         let pageHTMLData = NSData(contentsOfURL: pageURL)
         let lynchParser = TFHpple(HTMLData: pageHTMLData)
-        let coordinatesXpath = "//div[@id='Lynch']//div[@class='LynchComment']/@style"
-        let coordinatesString = lynchParser.peekAtSearchWithXPathQuery(coordinatesXpath).content
-        
-        let leftJunkRange = coordinatesString.rangeOfString("left: ")
-        let topJunkRange = coordinatesString.rangeOfString("px; top: ")
-        let widthJunkRange = coordinatesString.rangeOfString("px; width: ")
-        let heightJunkRange = coordinatesString.rangeOfString("px; height: ")
-        let colorJunkRange = coordinatesString.rangeOfString("px; color:")
-        
-        let textX = CGFloat(coordinatesString.substringWithRange(leftJunkRange!.endIndex ..< topJunkRange!.startIndex).toInt()!)
-        let textY = CGFloat(coordinatesString.substringWithRange(topJunkRange!.endIndex ..< widthJunkRange!.startIndex).toInt()!)
-        let textWidth = CGFloat(coordinatesString.substringWithRange(widthJunkRange!.endIndex ..< heightJunkRange!.startIndex).toInt()!)
-        let textHeight = CGFloat(coordinatesString.substringWithRange(heightJunkRange!.endIndex ..< colorJunkRange!.startIndex).toInt()!)
-        
-        let commentTextXpath = "//div[@id='Lynch']//div[@class='LynchComment']"
-        var lynchCommentRaw = lynchParser.peekAtSearchWithXPathQuery(commentTextXpath).raw
-        let beginningJunkRange = lynchCommentRaw.rangeOfString("><div>")
-        let endingJunkRange = lynchCommentRaw.rangeOfString("</div></div>")
-        var commentText = lynchCommentRaw.substringWithRange(beginningJunkRange!.endIndex.successor() ..< endingJunkRange!.startIndex.predecessor())
-        commentText = commentText.stringByReplacingOccurrencesOfString("<br/>", withString: "\n")
-
-        let label = UILabel(frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))
-        label.font = UIFont(name: "Arial", size: 13)
-        label.numberOfLines = 0
-        label.text = commentText
-        return label
+        let lynchCommentXpath = "//div[@id='Lynch']//div[@class='LynchComment']"
+        let lynchCommentsArray = lynchParser.searchWithXPathQuery(lynchCommentXpath) as [TFHppleElement]
+        for lynchCommentElement in lynchCommentsArray {
+            let coordinatesString = lynchCommentElement.attributes["style"]! as String
+            var lynchCommentRaw = lynchCommentElement.raw
+            
+            let leftJunkRange = coordinatesString.rangeOfString("left: ")
+            let topJunkRange = coordinatesString.rangeOfString("px; top: ")
+            let widthJunkRange = coordinatesString.rangeOfString("px; width: ")
+            let heightJunkRange = coordinatesString.rangeOfString("px; height: ")
+            let colorJunkRange = coordinatesString.rangeOfString("px; color:")
+            
+            let textX = CGFloat(coordinatesString.substringWithRange(leftJunkRange!.endIndex ..< topJunkRange!.startIndex).toInt()!)
+            let textY = CGFloat(coordinatesString.substringWithRange(topJunkRange!.endIndex ..< widthJunkRange!.startIndex).toInt()!)
+            let textWidth = CGFloat(coordinatesString.substringWithRange(widthJunkRange!.endIndex ..< heightJunkRange!.startIndex).toInt()!)
+            let textHeight = CGFloat(coordinatesString.substringWithRange(heightJunkRange!.endIndex ..< colorJunkRange!.startIndex).toInt()!)
+            
+            let beginningJunkRange = lynchCommentRaw.rangeOfString("><div>")
+            let endingJunkRange = lynchCommentRaw.rangeOfString("</div></div>")
+            var commentText = lynchCommentRaw.substringWithRange(beginningJunkRange!.endIndex.successor() ..< endingJunkRange!.startIndex.predecessor())
+            commentText = commentText.stringByReplacingOccurrencesOfString("<br/>", withString: "\n")
+            println(commentText)
+            while let beforeURLJunkRange = commentText.rangeOfString("<a href=\"http://") {
+                let afterURLJunkRange = commentText.rangeOfString("\" class=")
+                let afterURLJunkEndRange = commentText.rangeOfString("</a>")
+                let linkString = commentText.substringWithRange(beforeURLJunkRange.endIndex ..< afterURLJunkRange!.startIndex)
+                commentText.replaceRange(beforeURLJunkRange.startIndex ..< afterURLJunkEndRange!.endIndex, with: linkString)
+            }
+            
+            let label = UILabel(frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))
+            label.font = UIFont(name: "Arial", size: 13)
+            label.numberOfLines = 0
+            label.text = commentText
+            view.addSubview(label)
+        }
     }
     
 }
