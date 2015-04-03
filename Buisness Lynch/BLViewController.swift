@@ -12,12 +12,17 @@ class BLViewController: UIViewController {
 
     var srcImageStringURL: String?
     var srcView: UIView?
-    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/1/")!
+    var srcImage: UIImage?
+    var overlayImage: UIImage?
+    var xOffset: CGFloat?
+    var yOffset: CGFloat?
+    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/03/30/")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showImage()
         findImageOffset()
+        mergeImagesAndComments()
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,10 +30,12 @@ class BLViewController: UIViewController {
     }
     
     func showImage() {
-        srcView = UIImageView(image: loadSrcImage())
-        view.addSubview(srcView!)
-        view.addSubview(UIImageView(image: loadOverlayImage()))
-        addTestLabels()
+        loadSrcImage()
+        loadOverlayImage()
+//        srcView = UIImageView(image: loadSrcImage())
+//        view.addSubview(srcView!)
+//        view.addSubview(UIImageView(image: loadOverlayImage()))
+//        addTestLabels()
     }
     
     func loadSrcImage() -> UIImage {
@@ -37,8 +44,8 @@ class BLViewController: UIViewController {
         let srcImageXpath = "//link[@rel='image_src']/@href"
         srcImageStringURL = lynchParser.peekAtSearchWithXPathQuery(srcImageXpath).content
         let srcImageURL = NSURL(string: "http:" + srcImageStringURL!)!
-        let srcImage = UIImage(data: NSData(contentsOfURL: srcImageURL)!)!
-        return srcImage
+        srcImage = UIImage(data: NSData(contentsOfURL: srcImageURL)!)!
+        return srcImage!
     }
     
     func loadOverlayImage() -> UIImage {
@@ -48,8 +55,8 @@ class BLViewController: UIViewController {
         overlayImageStringURL = overlayImageStringURL.stringByDeletingLastPathComponent
         overlayImageStringURL = overlayImageStringURL + "/lynch-" + pngImageName
         let overlayImageURL = NSURL(string: overlayImageStringURL)!
-        let overlayImage = UIImage(data: NSData(contentsOfURL: overlayImageURL)!)!
-        return overlayImage
+        overlayImage = UIImage(data: NSData(contentsOfURL: overlayImageURL)!)!
+        return overlayImage!
     }
     
     func findImageOffset() {
@@ -63,13 +70,13 @@ class BLViewController: UIViewController {
         var yOffsetString = offsetString.substringWithRange(secondJunkRange!.endIndex ..< offsetString.endIndex)
         yOffsetString.removeRange(yOffsetString.rangeOfString("px;")!)
         
-        let xFloat = CGFloat(xOffsetString.toInt()!)
-        let newX = CGFloat(srcView!.center.x) + xFloat
-        srcView!.center.x = newX
+        xOffset = CGFloat(xOffsetString.toInt()!)
+//        let newX = CGFloat(srcView!.center.x) + xFloat
+//        srcView!.center.x = newX
         
-        let yFloat = CGFloat(yOffsetString.toInt()!)
-        let newY = CGFloat(srcView!.center.y) + yFloat
-        srcView!.center.y = newY
+        yOffset = CGFloat(yOffsetString.toInt()!)
+//        let newY = CGFloat(srcView!.center.y) + yFloat
+//        srcView!.center.y = newY
     }
 
     func addTestLabels() {
@@ -96,7 +103,6 @@ class BLViewController: UIViewController {
             let endingJunkRange = lynchCommentRaw.rangeOfString("</div></div>")
             var commentText = lynchCommentRaw.substringWithRange(beginningJunkRange!.endIndex.successor() ..< endingJunkRange!.startIndex.predecessor())
             commentText = commentText.stringByReplacingOccurrencesOfString("<br/>", withString: "\n")
-            println(commentText)
             while let beforeURLJunkRange = commentText.rangeOfString("<a href=\"http://") {
                 let afterURLJunkRange = commentText.rangeOfString("\" class=")
                 let afterURLJunkEndRange = commentText.rangeOfString("</a>")
@@ -112,4 +118,32 @@ class BLViewController: UIViewController {
         }
     }
     
+    func mergeImagesAndComments() {
+        var mergedWidth = calculateMergedSideSize(srcImage!.size.width, overlaySide: overlayImage!.size.width, offset: xOffset!)
+        var mergedHeight = calculateMergedSideSize(srcImage!.size.height, overlaySide: overlayImage!.size.height, offset: yOffset!)
+        let mergedSize = CGSize(width: mergedWidth, height: mergedHeight)
+        let overlayOrigin = CGPoint(x: ((xOffset! > 0) ? 0 : -xOffset!), y: ((yOffset! > 0) ? 0 : -yOffset!))
+        
+        UIGraphicsBeginImageContextWithOptions(mergedSize, false, 0.0)
+        let context = UIGraphicsGetCurrentContext()
+        let translation = CGAffineTransformMakeTranslation(overlayOrigin.x, overlayOrigin.y)
+        srcImage!.drawInRect(CGRect(x: xOffset!, y: yOffset!, width: srcImage!.size.width, height: srcImage!.size.height))
+        overlayImage!.drawInRect(CGRect(x: 0, y: 0, width: overlayImage!.size.width, height: overlayImage!.size.height))
+        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        let mergedImageView = UIImageView(frame: view.frame)
+        mergedImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        mergedImageView.image = resultImage
+        view.addSubview(mergedImageView)
+    }
+    
+    func calculateMergedSideSize(srcSide: CGFloat, overlaySide: CGFloat, offset: CGFloat) -> CGFloat {
+        if offset < 0 {
+            return offset + max(overlaySide, srcSide - offset)
+        }
+        else {
+            return max(overlaySide, offset + srcSide)
+        }
+    }
 }
