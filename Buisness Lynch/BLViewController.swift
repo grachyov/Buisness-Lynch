@@ -10,6 +10,8 @@ import UIKit
 
 class BLViewController: UIViewController {
 
+    @IBOutlet weak var imageContainerView: UIView!
+    
     var srcImageStringURL: String?
     var srcView: UIView?
     var srcImage: UIImage?
@@ -17,10 +19,13 @@ class BLViewController: UIViewController {
     var xOffset: CGFloat?
     var yOffset: CGFloat?
     var lynchComments: [(text: String, frame: CGRect)] = []
-    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/30/")!
+    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/15/")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         showImage()
         findImageOffset()
         mergeImagesAndComments()
@@ -140,10 +145,12 @@ class BLViewController: UIViewController {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        let mergedImageView = UIImageView(frame: view.frame)
-        mergedImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        let mergedImageView = UIImageView(frame: imageContainerView.frame)
+        view.sendSubviewToBack(imageContainerView)
         mergedImageView.image = resultImage
-        view.addSubview(mergedImageView)
+        mergedImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        mergedImageView.frame.origin = CGPointZero
+        imageContainerView.addSubview(mergedImageView)
     }
     
     func calculateMergedSideSize(srcSide: CGFloat, overlaySide: CGFloat, offset: CGFloat) -> CGFloat {

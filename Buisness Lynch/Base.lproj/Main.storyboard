@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Идиотека" id="Upj-ZT-55p"/>
+                    <tabBarItem key="tabBarItem" title="Идиотека" image="idiotTabBarIcon" id="Upj-ZT-55p"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvP-n4-Z2z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Мозг" id="YkL-jV-7ho"/>
+                    <tabBarItem key="tabBarItem" title="Мозг" image="brainTabBarIcon" id="YkL-jV-7ho"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsh-fi-6nE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -55,7 +55,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Фото дня" id="ZBK-DW-SeC"/>
+                    <tabBarItem key="tabBarItem" title="Фото дня" image="photoTabBarIcon" id="ZBK-DW-SeC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MR8-SV-GZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -74,7 +74,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Техдизайн" id="Iip-yW-baR"/>
+                    <tabBarItem key="tabBarItem" title="Техдизайн" image="designTabBarIcon" id="Iip-yW-baR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lus-Lb-kdh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -91,9 +91,50 @@
                     <view key="view" contentMode="scaleToFill" id="cf2-zY-9Wk">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DP9-WH-oTe">
+                                <rect key="frame" x="0.0" y="487" width="600" height="64"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8to-gD-xzT">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OtD-vx-0Ch">
+                                            <rect key="frame" x="522" y="17" width="70" height="30"/>
+                                            <state key="normal" title="Оригинал">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="OtD-vx-0Ch" secondAttribute="centerY" id="aYP-GN-3wn"/>
+                                        <constraint firstAttribute="trailing" secondItem="OtD-vx-0Ch" secondAttribute="trailing" constant="8" id="hkE-qf-qrc"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="fdE-3b-DBO"/>
+                                </constraints>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFG-8c-9hR" userLabel="Image Container View">
+                                <rect key="frame" x="0.0" y="20" width="600" height="467"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="DP9-WH-oTe" secondAttribute="centerX" id="59L-g3-pOH"/>
+                            <constraint firstItem="hFG-8c-9hR" firstAttribute="width" secondItem="cf2-zY-9Wk" secondAttribute="width" id="71x-rL-LJb"/>
+                            <constraint firstItem="Mi0-8b-M5u" firstAttribute="top" secondItem="DP9-WH-oTe" secondAttribute="bottom" id="IN4-rH-jnf"/>
+                            <constraint firstItem="DP9-WH-oTe" firstAttribute="top" secondItem="hFG-8c-9hR" secondAttribute="bottom" id="WQm-Zu-52I"/>
+                            <constraint firstAttribute="width" secondItem="DP9-WH-oTe" secondAttribute="width" id="mzp-Ds-xmB"/>
+                            <constraint firstAttribute="centerX" secondItem="hFG-8c-9hR" secondAttribute="centerX" id="uAF-FB-j9S"/>
+                            <constraint firstItem="hFG-8c-9hR" firstAttribute="top" secondItem="u0d-PT-xyg" secondAttribute="bottom" id="xh1-6b-5w1"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Бизнес-линч" id="ao4-Zx-CdJ"/>
+                    <tabBarItem key="tabBarItem" title="Бизнес-линч" image="lynchTabBarIcon" id="ao4-Zx-CdJ"/>
+                    <connections>
+                        <outlet property="imageContainerView" destination="hFG-8c-9hR" id="YxO-Np-kcv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKv-rE-PKh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -122,4 +163,11 @@
             <point key="canvasLocation" x="-1721" y="762"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="brainTabBarIcon" width="25" height="25"/>
+        <image name="designTabBarIcon" width="25" height="25"/>
+        <image name="idiotTabBarIcon" width="25" height="25"/>
+        <image name="lynchTabBarIcon" width="25" height="25"/>
+        <image name="photoTabBarIcon" width="25" height="25"/>
+    </resources>
 </document>
