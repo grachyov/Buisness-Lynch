@@ -16,7 +16,8 @@ class BLViewController: UIViewController {
     var overlayImage: UIImage?
     var xOffset: CGFloat?
     var yOffset: CGFloat?
-    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/03/30/")!
+    var lynchComments: [(text: String, frame: CGRect)] = []
+    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/30/")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,7 @@ class BLViewController: UIViewController {
 //        srcView = UIImageView(image: loadSrcImage())
 //        view.addSubview(srcView!)
 //        view.addSubview(UIImageView(image: loadOverlayImage()))
-//        addTestLabels()
+        addTestLabels()
     }
     
     func loadSrcImage() -> UIImage {
@@ -110,11 +111,12 @@ class BLViewController: UIViewController {
                 commentText.replaceRange(beforeURLJunkRange.startIndex ..< afterURLJunkEndRange!.endIndex, with: linkString)
             }
             
-            let label = UILabel(frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))
-            label.font = UIFont(name: "Arial", size: 13)
-            label.numberOfLines = 0
-            label.text = commentText
-            view.addSubview(label)
+            lynchComments += [(text: commentText, frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))]
+//            let label = UILabel(frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))
+//            label.font = UIFont(name: "Arial", size: 13)
+//            label.numberOfLines = 0
+//            label.text = commentText
+//            view.addSubview(label)
         }
     }
     
@@ -127,8 +129,14 @@ class BLViewController: UIViewController {
         UIGraphicsBeginImageContextWithOptions(mergedSize, false, 0.0)
         let context = UIGraphicsGetCurrentContext()
         let translation = CGAffineTransformMakeTranslation(overlayOrigin.x, overlayOrigin.y)
+        CGContextConcatCTM(context, translation)
         srcImage!.drawInRect(CGRect(x: xOffset!, y: yOffset!, width: srcImage!.size.width, height: srcImage!.size.height))
         overlayImage!.drawInRect(CGRect(x: 0, y: 0, width: overlayImage!.size.width, height: overlayImage!.size.height))
+        for (text: String, frame: CGRect) in lynchComments {
+            let attributedString = NSAttributedString(string:text, attributes:[NSFontAttributeName:UIFont(name:"Arial", size:13)!])
+            attributedString.drawInRect(frame)
+        }
+        CGContextConcatCTM(context, CGAffineTransformInvert(translation))
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
