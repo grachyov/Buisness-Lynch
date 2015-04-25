@@ -8,9 +8,12 @@
 
 import UIKit
 
-class BLViewController: UIViewController {
+class BLViewController: UIViewController, UIScrollViewDelegate {
 
-    @IBOutlet weak var imageContainerView: UIView!
+    @IBOutlet weak var imageScrollView: UIScrollView!
+    @IBOutlet weak var descriptionView: UIView!
+    
+    var mergedImageView: UIImageView?
     
     var srcImageStringURL: String?
     var srcView: UIView?
@@ -19,20 +22,44 @@ class BLViewController: UIViewController {
     var xOffset: CGFloat?
     var yOffset: CGFloat?
     var lynchComments: [(text: String, frame: CGRect)] = []
-    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/2015/01/15/")!
+    let pageURL = NSURL(string: "http://www.artlebedev.ru/kovodstvo/business-lynch/today/")!
+    var didSetup = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(animated: Bool) {
-        showImage()
-        findImageOffset()
-        mergeImagesAndComments()
+        if !didSetup {
+            didSetup = true
+            showImage()
+            findImageOffset()
+            mergeImagesAndComments()
+            addDescriptionViewSeparator()
+            addDoubleTapGestureRecognizer()
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    func addDoubleTapGestureRecognizer() {
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleDoubleTap:"))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        doubleTapRecognizer.numberOfTouchesRequired = 1
+        imageScrollView.addGestureRecognizer(doubleTapRecognizer)
+    }
+    
+    func handleDoubleTap(recognizer: UITapGestureRecognizer) {
+        if imageScrollView.zoomScale > imageScrollView.minimumZoomScale {
+            imageScrollView.setZoomScale(imageScrollView.minimumZoomScale, animated: true)
+        }
+        else {
+            imageScrollView.setZoomScale(imageScrollView.maximumZoomScale, animated: true)
+        }
+    }
+    
+    func addDescriptionViewSeparator() {
+        let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: descriptionView.frame.width, height: 0.5))
+        separatorView.backgroundColor = UIColor.lightGrayColor()
+        descriptionView.addSubview(separatorView)
     }
     
     func showImage() {
@@ -89,9 +116,9 @@ class BLViewController: UIViewController {
         let pageHTMLData = NSData(contentsOfURL: pageURL)
         let lynchParser = TFHpple(HTMLData: pageHTMLData)
         let lynchCommentXpath = "//div[@id='Lynch']//div[@class='LynchComment']"
-        let lynchCommentsArray = lynchParser.searchWithXPathQuery(lynchCommentXpath) as [TFHppleElement]
+        let lynchCommentsArray = lynchParser.searchWithXPathQuery(lynchCommentXpath) as! [TFHppleElement]
         for lynchCommentElement in lynchCommentsArray {
-            let coordinatesString = lynchCommentElement.attributes["style"]! as String
+            let coordinatesString = lynchCommentElement.attributes["style"]! as! String
             var lynchCommentRaw = lynchCommentElement.raw
             
             let leftJunkRange = coordinatesString.rangeOfString("left: ")
@@ -107,21 +134,18 @@ class BLViewController: UIViewController {
             
             let beginningJunkRange = lynchCommentRaw.rangeOfString("><div>")
             let endingJunkRange = lynchCommentRaw.rangeOfString("</div></div>")
-            var commentText = lynchCommentRaw.substringWithRange(beginningJunkRange!.endIndex.successor() ..< endingJunkRange!.startIndex.predecessor())
-            commentText = commentText.stringByReplacingOccurrencesOfString("<br/>", withString: "\n")
-            while let beforeURLJunkRange = commentText.rangeOfString("<a href=\"http://") {
-                let afterURLJunkRange = commentText.rangeOfString("\" class=")
-                let afterURLJunkEndRange = commentText.rangeOfString("</a>")
-                let linkString = commentText.substringWithRange(beforeURLJunkRange.endIndex ..< afterURLJunkRange!.startIndex)
-                commentText.replaceRange(beforeURLJunkRange.startIndex ..< afterURLJunkEndRange!.endIndex, with: linkString)
+            if (endingJunkRange != nil) {
+                var commentText = lynchCommentRaw.substringWithRange(beginningJunkRange!.endIndex.successor() ..< endingJunkRange!.startIndex.predecessor())
+                commentText = commentText.stringByReplacingOccurrencesOfString("<br/>", withString: "\n")
+                while let beforeURLJunkRange = commentText.rangeOfString("<a href=\"http://") {
+                    let afterURLJunkRange = commentText.rangeOfString("\" class=")
+                    let afterURLJunkEndRange = commentText.rangeOfString("</a>")
+                    let linkString = commentText.substringWithRange(beforeURLJunkRange.endIndex ..< afterURLJunkRange!.startIndex)
+                    commentText.replaceRange(beforeURLJunkRange.startIndex ..< afterURLJunkEndRange!.endIndex, with: linkString)
+                }
+                
+                lynchComments += [(text: commentText, frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))]
             }
-            
-            lynchComments += [(text: commentText, frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))]
-//            let label = UILabel(frame: CGRect(x: textX + 8, y: textY, width: textWidth - 8 - 4, height: textHeight))
-//            label.font = UIFont(name: "Arial", size: 13)
-//            label.numberOfLines = 0
-//            label.text = commentText
-//            view.addSubview(label)
         }
     }
     
@@ -145,12 +169,12 @@ class BLViewController: UIViewController {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        let mergedImageView = UIImageView(frame: imageContainerView.frame)
-        view.sendSubviewToBack(imageContainerView)
-        mergedImageView.image = resultImage
-        mergedImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        mergedImageView.frame.origin = CGPointZero
-        imageContainerView.addSubview(mergedImageView)
+        mergedImageView = UIImageView(image: resultImage)
+        imageScrollView.maximumZoomScale = 1
+        imageScrollView.minimumZoomScale = 0.3
+        imageScrollView.contentSize = resultImage.size
+        imageScrollView.delegate = self
+        imageScrollView.addSubview(mergedImageView!)
     }
     
     func calculateMergedSideSize(srcSide: CGFloat, overlaySide: CGFloat, offset: CGFloat) -> CGFloat {
@@ -160,5 +184,9 @@ class BLViewController: UIViewController {
         else {
             return max(overlaySide, offset + srcSide)
         }
+    }
+    
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return mergedImageView
     }
 }

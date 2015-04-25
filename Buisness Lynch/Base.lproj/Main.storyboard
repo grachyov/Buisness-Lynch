@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1w-9B-ZB4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1w-9B-ZB4">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Идиотека-->
@@ -92,48 +94,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DP9-WH-oTe">
-                                <rect key="frame" x="0.0" y="487" width="600" height="64"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8to-gD-xzT">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OtD-vx-0Ch">
-                                            <rect key="frame" x="522" y="17" width="70" height="30"/>
-                                            <state key="normal" title="Оригинал">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="OtD-vx-0Ch" secondAttribute="centerY" id="aYP-GN-3wn"/>
-                                        <constraint firstAttribute="trailing" secondItem="OtD-vx-0Ch" secondAttribute="trailing" constant="8" id="hkE-qf-qrc"/>
-                                    </constraints>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="fdE-3b-DBO"/>
-                                </constraints>
-                                <blurEffect style="extraLight"/>
-                            </visualEffectView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFG-8c-9hR" userLabel="Image Container View">
-                                <rect key="frame" x="0.0" y="20" width="600" height="467"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Fm-7f-Zm8">
+                                <rect key="frame" x="0.0" y="40" width="600" height="447"/>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2S-cm-WRw" userLabel="Status bar view">
+                                <rect key="frame" x="0.0" y="20" width="600" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="efE-qB-wii"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cfP-5C-V6v" userLabel="Minimized description view">
+                                <rect key="frame" x="0.0" y="487" width="600" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OtD-vx-0Ch">
+                                        <rect key="frame" x="522" y="18" width="70" height="30"/>
+                                        <state key="normal" title="Оригинал">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="OtD-vx-0Ch" secondAttribute="trailing" constant="8" id="Avv-rP-dYx"/>
+                                    <constraint firstAttribute="height" constant="64" id="MUt-9F-5LE"/>
+                                    <constraint firstAttribute="centerY" secondItem="OtD-vx-0Ch" secondAttribute="centerY" constant="-1" id="Y6A-2G-poJ"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="DP9-WH-oTe" secondAttribute="centerX" id="59L-g3-pOH"/>
-                            <constraint firstItem="hFG-8c-9hR" firstAttribute="width" secondItem="cf2-zY-9Wk" secondAttribute="width" id="71x-rL-LJb"/>
-                            <constraint firstItem="Mi0-8b-M5u" firstAttribute="top" secondItem="DP9-WH-oTe" secondAttribute="bottom" id="IN4-rH-jnf"/>
-                            <constraint firstItem="DP9-WH-oTe" firstAttribute="top" secondItem="hFG-8c-9hR" secondAttribute="bottom" id="WQm-Zu-52I"/>
-                            <constraint firstAttribute="width" secondItem="DP9-WH-oTe" secondAttribute="width" id="mzp-Ds-xmB"/>
-                            <constraint firstAttribute="centerX" secondItem="hFG-8c-9hR" secondAttribute="centerX" id="uAF-FB-j9S"/>
-                            <constraint firstItem="hFG-8c-9hR" firstAttribute="top" secondItem="u0d-PT-xyg" secondAttribute="bottom" id="xh1-6b-5w1"/>
+                            <constraint firstItem="4Fm-7f-Zm8" firstAttribute="leading" secondItem="cf2-zY-9Wk" secondAttribute="leadingMargin" constant="-16" id="4SA-pI-h3h"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4Fm-7f-Zm8" secondAttribute="trailing" constant="-16" id="8B9-XC-y3u"/>
+                            <constraint firstItem="4Fm-7f-Zm8" firstAttribute="top" secondItem="t2S-cm-WRw" secondAttribute="bottom" id="A9P-aW-qmx"/>
+                            <constraint firstItem="t2S-cm-WRw" firstAttribute="leading" secondItem="cf2-zY-9Wk" secondAttribute="leadingMargin" constant="-16" id="WCq-hz-uag"/>
+                            <constraint firstItem="Mi0-8b-M5u" firstAttribute="top" secondItem="4Fm-7f-Zm8" secondAttribute="bottom" constant="64" id="Xda-aZ-eBs"/>
+                            <constraint firstItem="cfP-5C-V6v" firstAttribute="leading" secondItem="cf2-zY-9Wk" secondAttribute="leadingMargin" constant="-16" id="ZFx-Oi-JCC"/>
+                            <constraint firstItem="u0d-PT-xyg" firstAttribute="top" secondItem="t2S-cm-WRw" secondAttribute="top" id="b5l-nb-Ujs"/>
+                            <constraint firstAttribute="centerX" secondItem="4Fm-7f-Zm8" secondAttribute="centerX" id="fPX-3h-MI7"/>
+                            <constraint firstItem="Mi0-8b-M5u" firstAttribute="top" secondItem="cfP-5C-V6v" secondAttribute="bottom" id="hJh-D4-MdQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="t2S-cm-WRw" secondAttribute="trailing" constant="-16" id="lgv-Cl-Aaz"/>
+                            <constraint firstAttribute="centerX" secondItem="cfP-5C-V6v" secondAttribute="centerX" id="oQR-rz-Z5l"/>
+                            <constraint firstAttribute="centerX" secondItem="t2S-cm-WRw" secondAttribute="centerX" id="ujh-0C-RWX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cfP-5C-V6v" secondAttribute="trailing" constant="-16" id="wRU-8d-Wxd"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Бизнес-линч" image="lynchTabBarIcon" id="ao4-Zx-CdJ"/>
                     <connections>
-                        <outlet property="imageContainerView" destination="hFG-8c-9hR" id="YxO-Np-kcv"/>
+                        <outlet property="descriptionView" destination="cfP-5C-V6v" id="llT-go-S3n"/>
+                        <outlet property="imageScrollView" destination="4Fm-7f-Zm8" id="4eR-oe-1uF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKv-rE-PKh" userLabel="First Responder" sceneMemberID="firstResponder"/>

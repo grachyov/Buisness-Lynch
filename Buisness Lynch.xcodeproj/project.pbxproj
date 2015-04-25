@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD371D061AD552FE00D44BAB /* BLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD371D051AD552FE00D44BAB /* BLParser.swift */; };
 		AD6620501AB02E2F005126A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD66204F1AB02E2F005126A6 /* AppDelegate.swift */; };
 		AD6620551AB02E2F005126A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD6620531AB02E2F005126A6 /* Main.storyboard */; };
 		AD6620571AB02E2F005126A6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6620561AB02E2F005126A6 /* Images.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD371D051AD552FE00D44BAB /* BLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLParser.swift; sourceTree = "<group>"; };
 		AD66204A1AB02E2F005126A6 /* Buisness Lynch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Buisness Lynch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD66204E1AB02E2F005126A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD66204F1AB02E2F005126A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				AD66204F1AB02E2F005126A6 /* AppDelegate.swift */,
 				AD746EF21AC3267600AB3939 /* BLViewController.swift */,
+				AD371D051AD552FE00D44BAB /* BLParser.swift */,
 				AD6620531AB02E2F005126A6 /* Main.storyboard */,
 				AD6620561AB02E2F005126A6 /* Images.xcassets */,
 				AD6620581AB02E2F005126A6 /* LaunchScreen.xib */,
@@ -242,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD371D061AD552FE00D44BAB /* BLParser.swift in Sources */,
 				ADC56F6B1AC6D201003B2FE0 /* TFHppleElement.m in Sources */,
 				AD746EF31AC3267600AB3939 /* BLViewController.swift in Sources */,
 				ADC56F6C1AC6D201003B2FE0 /* XPathQuery.m in Sources */,
@@ -375,7 +379,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "Buisness Lynch/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Buisness Lynch/Buisness Lynch-Bridging-Header.h";
@@ -391,7 +395,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "Buisness Lynch/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Buisness Lynch/Buisness Lynch-Bridging-Header.h";
