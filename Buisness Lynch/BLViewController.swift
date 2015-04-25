@@ -18,6 +18,7 @@ class BLViewController: UIViewController, UIScrollViewDelegate {
     var srcImageStringURL: String?
     var srcView: UIView?
     var srcImage: UIImage?
+    var mergedImage: UIImage?
     var overlayImage: UIImage?
     var xOffset: CGFloat?
     var yOffset: CGFloat?
@@ -166,17 +167,28 @@ class BLViewController: UIViewController, UIScrollViewDelegate {
             attributedString.drawInRect(frame)
         }
         CGContextConcatCTM(context, CGAffineTransformInvert(translation))
-        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+        mergedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        mergedImageView = UIImageView(image: resultImage)
+        mergedImageView = UIImageView(image: mergedImage)
         imageScrollView.maximumZoomScale = 1
-        imageScrollView.minimumZoomScale = 0.3
-        imageScrollView.contentSize = resultImage.size
+        imageScrollView.minimumZoomScale = 0.4
+        imageScrollView.contentSize = mergedImage!.size
         imageScrollView.delegate = self
+        imageScrollView.zoomScale = 0.4
         imageScrollView.addSubview(mergedImageView!)
     }
     
+    @IBAction func switchBetweenCommentedAndOriginal(sender: UIButton) {
+        if sender.titleLabel?.text! == "Оригинал" {
+            sender.setTitle("С рецензией", forState: UIControlState.allZeros)
+            mergedImageView?.image = srcImage
+        }
+        else {
+            sender.setTitle("Оригинал", forState: UIControlState.allZeros)
+            mergedImageView?.image = mergedImage
+        }
+    }
     func calculateMergedSideSize(srcSide: CGFloat, overlaySide: CGFloat, offset: CGFloat) -> CGFloat {
         if offset < 0 {
             return offset + max(overlaySide, srcSide - offset)
